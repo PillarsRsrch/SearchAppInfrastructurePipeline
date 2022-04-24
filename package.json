@@ -7,6 +7,10 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
+    "bootstrap": "cdk bootstrap aws://$AWS_ACCOUNT_ID/$AWS_REGION",
+    "synth": "cdk synth",
+    "provision": "cdk deploy",
+    "deprovision": "cdk destroy",
     "test": "jest",
     "cdk": "cdk"
   },
