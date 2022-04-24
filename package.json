@@ -2,17 +2,16 @@
   "name": "search_app_pipeline",
   "version": "0.1.0",
   "bin": {
-    "search_app_pipeline": "bin/search_app_pipeline.js"
+    "search_app_pipeline": "bin/SearchAppPipeline.js"
   },
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
-    "bootstrap": "cdk bootstrap aws://$AWS_ACCOUNT_ID/$AWS_REGION",
-    "synth": "cdk synth",
+    "test": "jest",
+    "cdk": "cdk",
     "provision": "cdk deploy",
     "deprovision": "cdk destroy",
-    "test": "jest",
-    "cdk": "cdk"
+    "bootstrap": "cdk bootstrap aws://$AWS_ACCOUNT_ID/$AWS_REGION"
   },
   "devDependencies": {
     "@types/jest": "^26.0.10",

@@ -1,45 +1,52 @@
 import { Stack, StackProps } from "aws-cdk-lib";
 import { Construct } from "constructs";
-import * as EC2 from "aws-cdk-lib/aws-ec2";
 import * as ECS from "aws-cdk-lib/aws-ecs";
 import * as ECSPatterns from "aws-cdk-lib/aws-ecs-patterns";
 import * as ECR from "aws-cdk-lib/aws-ecr";
+import * as Route53 from "aws-cdk-lib/aws-route53";
+import * as ELB from "aws-cdk-lib/aws-elasticloadbalancingv2";
+import * as ACM from "aws-cdk-lib/aws-certificatemanager";
+import * as Route53Targets from "aws-cdk-lib/aws-route53-targets";
 
 export class SearchAppPipelineStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
-
-    const vpc = this.createVPC();
-    const cluster = this.createECS(vpc);
-    const repository = new ECR.Repository(this, "pillars-app", {
-      repositoryName: "pillars-app",
-    });
-    this.createFargateService(repository, cluster);
-  }
-
-  private createVPC() {
-    return new EC2.Vpc(this, "SearchApp-VPC-production-us-west-2");
-  }
-
-  private createECS(vpc: EC2.Vpc) {
-    return new ECS.Cluster(this, "SerachApp-ECS-Cluster-production-us-west-2", {
-      vpc,
-    });
-  }
-
-  private createFargateService(
-    repository: ECR.Repository,
-    cluster: ECS.Cluster
-  ) {
-    return new ECSPatterns.ApplicationLoadBalancedFargateService(
+    const hostedZone = Route53.HostedZone.fromHostedZoneAttributes(
       this,
-      "SearchApp-FargateService-production-us-west-2",
+      "HostedZone",
       {
-        cluster,
-        taskImageOptions: {
-          image: ECS.ContainerImage.fromEcrRepository(repository),
-        },
+        hostedZoneId: "Z0078058WYGXEFWWCLJB",
+        zoneName: "pillars-research.com",
       }
     );
+
+    const fargateService =
+      new ECSPatterns.ApplicationLoadBalancedFargateService(this, "SearchApp", {
+        taskImageOptions: {
+          image: ECS.ContainerImage.fromEcrRepository(
+            ECR.Repository.fromRepositoryName(
+              this,
+              "pillars-app",
+              "pillars-app"
+            )
+          ),
+          containerPort: 3000,
+        },
+        protocol: ELB.ApplicationProtocol.HTTPS,
+        certificate: new ACM.Certificate(this, "Certificate", {
+          domainName: "pillars-research.com",
+          validation: ACM.CertificateValidation.fromDns(hostedZone),
+        }),
+        redirectHTTP: true,
+        domainZone: hostedZone,
+        publicLoadBalancer: true,
+      });
+
+    new Route53.ARecord(this, "AliasRecord", {
+      zone: hostedZone,
+      target: Route53.RecordTarget.fromAlias(
+        new Route53Targets.LoadBalancerTarget(fargateService.loadBalancer)
+      ),
+    });
   }
 }
