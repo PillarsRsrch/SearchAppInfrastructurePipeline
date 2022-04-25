@@ -21,26 +21,31 @@ export class SearchAppStack extends Stack {
     );
 
     const fargateService =
-      new ECSPatterns.ApplicationLoadBalancedFargateService(this, "SearchApp", {
-        taskImageOptions: {
-          image: ECS.ContainerImage.fromEcrRepository(
-            ECR.Repository.fromRepositoryName(
-              this,
-              "pillars-app",
-              "pillars-app"
-            )
-          ),
-          containerPort: 3000,
-        },
-        protocol: ELB.ApplicationProtocol.HTTPS,
-        certificate: new ACM.Certificate(this, "Certificate", {
-          domainName: "pillars-research.com",
-          validation: ACM.CertificateValidation.fromDns(hostedZone),
-        }),
-        redirectHTTP: true,
-        domainZone: hostedZone,
-        publicLoadBalancer: true,
-      });
+      new ECSPatterns.ApplicationLoadBalancedFargateService(
+        this,
+        `Fargate-Service-${id}`,
+        {
+          serviceName: "SearchAppFrontend",
+          taskImageOptions: {
+            image: ECS.ContainerImage.fromEcrRepository(
+              ECR.Repository.fromRepositoryName(
+                this,
+                "pillars-app",
+                "pillars-app"
+              )
+            ),
+            containerPort: 3000,
+          },
+          protocol: ELB.ApplicationProtocol.HTTPS,
+          certificate: new ACM.Certificate(this, "Certificate", {
+            domainName: "pillars-research.com",
+            validation: ACM.CertificateValidation.fromDns(hostedZone),
+          }),
+          redirectHTTP: true,
+          domainZone: hostedZone,
+          publicLoadBalancer: true,
+        }
+      );
 
     new Route53.ARecord(this, "AliasRecord", {
       zone: hostedZone,
