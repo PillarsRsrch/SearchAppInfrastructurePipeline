@@ -20,7 +20,7 @@ export class SearchAppPipelineInfrastructureStack extends Stack {
         ),
         additionalInputs: {
           source: CodePipelineSource.ecr(
-            ECR.Repository.fromRepositoryName(this, "ECR", "search-app")
+            ECR.Repository.fromRepositoryName(this, "ECR", "pillars-app")
           ),
         },
         commands: ["npm ci", "npm run build", "npm run synth"],

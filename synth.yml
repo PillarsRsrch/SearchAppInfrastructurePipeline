@@ -14,7 +14,7 @@ Resources:
         detail:
           requestParameters:
             repositoryName:
-              - search-app
+              - pillars-app
             imageTag:
               - latest
           eventName:
@@ -192,8 +192,8 @@ Resources:
                 Provider: ECR
                 Version: "1"
               Configuration:
-                RepositoryName: search-app
-              Name: search-app
+                RepositoryName: pillars-app
+              Name: pillars-app
               OutputArtifacts:
                 - Name: c8ed0c1a843464bef617f9ace82635b35db42e65de_Source
               RoleArn:
@@ -346,7 +346,7 @@ Resources:
                 - ""
                 - - "arn:"
                   - Ref: AWS::Partition
-                  - :ecr:us-west-2:061155101849:repository/search-app
+                  - :ecr:us-west-2:061155101849:repository/pillars-app
           - Action:
               - s3:Abort*
               - s3:DeleteObject*
