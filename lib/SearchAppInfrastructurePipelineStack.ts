@@ -37,7 +37,7 @@ export class SearchAppPipelineInfrastructureStack extends Stack {
 
     pipeline.addStage(
       new SearchAppInfrastructurePipelineStage(this, "prod", {
-        env: { account: "", region: "" },
+        env: { account: "061155101849", region: "us-west-2" },
       })
     );
   }
