@@ -11,14 +11,24 @@ import * as Route53Targets from "aws-cdk-lib/aws-route53-targets";
 export class SearchAppStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
-    const hostedZone = Route53.HostedZone.fromHostedZoneAttributes(
+    const hostedZone = new Route53.HostedZone(
       this,
-      "HostedZone",
+      "SearchAppPublicHostedZone",
       {
-        hostedZoneId: "Z0078058WYGXEFWWCLJB",
-        zoneName: "pillars-research.com",
+        zoneName: "pillars-reseach.com",
       }
     );
+
+    new Route53.NsRecord(this, "AWSNameServers", {
+      zone: hostedZone,
+      recordName: "pillars-research.com",
+      values: [
+        "ns-580.awsdns-08.net.",
+        "ns-1248.awsdns-28.org.",
+        "ns-1884.awsdns-43.co.uk.",
+        "ns-101.awsdns-12.com.",
+      ],
+    });
 
     const fargateService =
       new ECSPatterns.ApplicationLoadBalancedFargateService(
@@ -47,8 +57,9 @@ export class SearchAppStack extends Stack {
         }
       );
 
-    new Route53.ARecord(this, "AliasRecord", {
+    new Route53.ARecord(this, "LoadBalancerRecord", {
       zone: hostedZone,
+      recordName: "pillars-research.com",
       target: Route53.RecordTarget.fromAlias(
         new Route53Targets.LoadBalancerTarget(fargateService.loadBalancer)
       ),
