@@ -20,17 +20,6 @@ export class SearchAppStack extends Stack {
       }
     );
 
-    // new Route53.NsRecord(this, "AWSNameServers", {
-    //   zone: hostedZone,
-    //   recordName: domainName,
-    //   values: [
-    //     "ns-580.awsdns-08.net.",
-    //     "ns-1248.awsdns-28.org.",
-    //     "ns-1884.awsdns-43.co.uk.",
-    //     "ns-101.awsdns-12.com.",
-    //   ],
-    // });
-
     const fargateService =
       new ECSPatterns.ApplicationLoadBalancedFargateService(
         this,
