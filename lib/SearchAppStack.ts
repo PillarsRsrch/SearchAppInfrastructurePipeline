@@ -15,13 +15,13 @@ export class SearchAppStack extends Stack {
       this,
       "SearchAppPublicHostedZone",
       {
-        zoneName: "pillars-reseach-test.com",
+        zoneName: "pillars-reseach.com",
       }
     );
 
     new Route53.NsRecord(this, "AWSNameServers", {
       zone: hostedZone,
-      recordName: "pillars-research-test.com",
+      recordName: "pillars-research.com",
       values: [
         "ns-580.awsdns-08.net.",
         "ns-1248.awsdns-28.org.",
@@ -48,7 +48,7 @@ export class SearchAppStack extends Stack {
           },
           protocol: ELB.ApplicationProtocol.HTTPS,
           certificate: new ACM.Certificate(this, "Certificate", {
-            domainName: "pillars-research-test.com",
+            domainName: "pillars-research.com",
             validation: ACM.CertificateValidation.fromDns(hostedZone),
           }),
           redirectHTTP: true,
@@ -59,7 +59,7 @@ export class SearchAppStack extends Stack {
 
     new Route53.ARecord(this, "LoadBalancerRecord", {
       zone: hostedZone,
-      recordName: "pillars-research-test.com",
+      recordName: "pillars-research.com",
       target: Route53.RecordTarget.fromAlias(
         new Route53Targets.LoadBalancerTarget(fargateService.loadBalancer)
       ),
