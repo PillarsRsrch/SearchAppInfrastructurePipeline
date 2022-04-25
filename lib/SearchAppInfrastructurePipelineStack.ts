@@ -6,11 +6,11 @@ import {
 } from "aws-cdk-lib/pipelines";
 import { Construct } from "constructs";
 
-export class SearchAppPipelineStack extends Stack {
+export class SearchAppPipelineInfrastructureStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    new CodePipeline(this, "Pipeline", {
+    const pipeline = new CodePipeline(this, "Pipeline", {
       pipelineName: "SearchApp",
       synth: new ShellStep("Synthesis", {
         input: CodePipelineSource.gitHub(

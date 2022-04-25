@@ -1,5 +1,5 @@
 {
-  "app": "npx ts-node --prefer-ts-exts bin/SearchAppPipeline.ts",
+  "app": "npx ts-node --prefer-ts-exts bin/SearchAppInfrastructurePipeline.ts",
   "watch": {
     "include": ["**"],
     "exclude": [
