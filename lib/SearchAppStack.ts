@@ -18,7 +18,7 @@ export class SearchAppStack extends Stack {
       this,
       "SearchAppPublicHostedZone",
       {
-        hostedZoneId: "Z00651222IWOQ6SX5LSE0",
+        hostedZoneId: "Z00531743LV9NNGM3K4JP",
         zoneName: domainName,
       }
     );
