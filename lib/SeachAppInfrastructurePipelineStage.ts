@@ -8,6 +8,6 @@ export class SearchAppInfrastructurePipelineStage extends Stage {
 
     const region = props?.env?.region ? props?.env?.region : "us-west-2";
 
-    new SearchAppStack(this, `SearchApp-${stageName}-${region}`, props);
+    new SearchAppStack(this, `${stageName}-${region}`, props);
   }
 }

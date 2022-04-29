@@ -9,16 +9,16 @@ import * as CloudFront from "aws-cdk-lib/aws-cloudfront";
 import * as CloudFrontOrigins from "aws-cdk-lib/aws-cloudfront-origins";
 import * as ACM from "aws-cdk-lib/aws-certificatemanager";
 import * as Route53Targets from "aws-cdk-lib/aws-route53-targets";
-import * as S3 from "aws-cdk-lib/aws-s3";
 
 export class SearchAppStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
     const domainName = "pillars-research.com";
-    const hostedZone = new Route53.HostedZone(
+    const hostedZone = Route53.HostedZone.fromHostedZoneAttributes(
       this,
       "SearchAppPublicHostedZone",
       {
+        hostedZoneId: "Z00651222IWOQ6SX5LSE0",
         zoneName: domainName,
       }
     );
