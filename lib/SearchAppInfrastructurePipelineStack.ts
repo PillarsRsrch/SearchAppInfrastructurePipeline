@@ -27,7 +27,10 @@ export class SearchAppPipelineInfrastructureStack extends Stack {
                 this,
                 "SearchApp-Registry",
                 "pillars-app"
-              )
+              ),
+              {
+                imageTag: "latest",
+              }
             ),
           },
           commands: ["npm ci", "npm run build", "npm run synth"],
