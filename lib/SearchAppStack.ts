@@ -9,8 +9,8 @@ import * as CloudFront from "aws-cdk-lib/aws-cloudfront";
 import * as CloudFrontOrigins from "aws-cdk-lib/aws-cloudfront-origins";
 import * as ACM from "aws-cdk-lib/aws-certificatemanager";
 import * as Route53Targets from "aws-cdk-lib/aws-route53-targets";
-import * as CDK from "aws-cdk-lib/core";
-import * as ECS from "aws-cdk-lib/aws-ecs"
+import * as CDK from "aws-cdk-lib";
+import * as ECS from "aws-cdk-lib/aws-ecs";
 
 export class SearchAppStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -91,7 +91,7 @@ export class SearchAppStack extends Stack {
         keyName: `Search-App-${id}-Key`,
       }
     );
-    CDK.Tags.of(searchAppInstance).add("sha", image.imageName)
+    CDK.Tags.of(searchAppInstance).add("sha", image.imageName);
 
     const script = readFileSync("./lib/scripts/run-app.sh", "utf-8");
     searchAppInstance.addUserData(script);
