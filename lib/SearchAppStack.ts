@@ -9,6 +9,7 @@ import * as CloudFront from "aws-cdk-lib/aws-cloudfront";
 import * as CloudFrontOrigins from "aws-cdk-lib/aws-cloudfront-origins";
 import * as ACM from "aws-cdk-lib/aws-certificatemanager";
 import * as Route53Targets from "aws-cdk-lib/aws-route53-targets";
+import { v4 as uuid } from "uuid";
 
 export class SearchAppStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -69,7 +70,7 @@ export class SearchAppStack extends Stack {
 
     const searchAppInstance = new EC2.Instance(
       this,
-      `Search-App-${id}-Instance`,
+      `Search-App-${id}-Instance-${uuid()}`,
       {
         vpc,
         vpcSubnets: {
